@@ -770,7 +770,6 @@ struct Curl_addrinfo *Curl_resolver_getaddrinfo(struct Curl_easy *data,
                                                 int *waitp)
 {
   struct thread_data *res = &data->state.async.thdata;
-  (void)port;
   *waitp = 0; /* default to synchronous response */
 
   res->hostname = strdup(hostname);
@@ -812,6 +811,7 @@ struct Curl_addrinfo *Curl_resolver_getaddrinfo(struct Curl_easy *data,
                      service, &hints, addrinfo_cb, data);
   }
 #else
+  (void)port;
 
 #ifdef HAVE_CARES_IPV6
   if((data->conn->ip_version != CURL_IPRESOLVE_V4) && Curl_ipv6works(data)) {
