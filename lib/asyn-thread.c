@@ -653,7 +653,7 @@ int Curl_resolver_getsock(struct Curl_easy *data, curl_socket_t *socks)
 #ifndef CURL_DISABLE_SOCKETPAIR
   /* return read fd to client for polling the DNS resolution status */
   socks[socketi] = td->tsd.sock_pair[0];
-  ret_val = GETSOCK_READSOCK(socketi);
+  ret_val |= GETSOCK_READSOCK(socketi);
 #else
   {
     timediff_t milli;
