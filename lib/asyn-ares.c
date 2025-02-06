@@ -770,6 +770,7 @@ struct Curl_addrinfo *Curl_resolver_getaddrinfo(struct Curl_easy *data,
                                                 int *waitp)
 {
   struct thread_data *res = &data->state.async.thdata;
+  (void)port;
   *waitp = 0; /* default to synchronous response */
 
   res->hostname = strdup(hostname);
