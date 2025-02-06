@@ -633,16 +633,17 @@ CURLcode Curl_resolver_is_resolved(struct Curl_easy *data,
 int Curl_resolver_getsock(struct Curl_easy *data, curl_socket_t *socks)
 {
   int ret_val = 0;
-  int socketi = 0;
-#ifndef CURL_DISABLE_SOCKETPAIR
   struct thread_data *td = &data->state.async.thdata;
-#else
+#if !defined(CURL_DISABLE_SOCKETPAIR) || defined(USE_HTTPSRR_ARES)
+  int socketi = 0;
+#endif
+#ifdef CURL_DISABLE_SOCKETPAIR
   (void)socks;
 #endif
 
 #ifdef USE_HTTPSRR_ARES
-  if(data->state.async.thdata.channel) {
-    ret_val = Curl_ares_getsock(data, data->state.async.thdata.channel, socks);
+  if(td->channel) {
+    ret_val = Curl_ares_getsock(data, td->channel, socks);
     for(socketi = 0; socketi < (MAX_SOCKSPEREASYHANDLE - 1); socketi++)
       if(!ARES_GETSOCK_READABLE(ret_val, socketi) &&
          !ARES_GETSOCK_WRITABLE(ret_val, socketi))
